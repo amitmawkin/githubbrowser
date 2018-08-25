@@ -1,7 +1,8 @@
 "use strict";
 import React, { Component } from "react";
-import { Text, View, ListView, Image } from "react-native";
+import { Text, View, ListView, Image, StyleSheet } from "react-native";
 import AuthService from "./AuthService";
+import moment from "moment";
 
 export default class PushPayload extends Component {
   constructor(props) {
@@ -11,33 +12,29 @@ export default class PushPayload extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.state = {
-      dataSource: ds
+      dataSource: ds.cloneWithRows(props.pushEvent.payload.commits),
+      pushEvent: props.pushEvent
     };
   }
 
-  fetchFeed() {
-    AuthService.getAuthInfo((err, authInfo) => {
-      var url =
-        "https://api.github.com/users/" + authInfo.user.login + "/events";
-
-      fetch(url, {
-        headers: authInfo.header
-      })
-        .then(response => response.json())
-        .then(responseData => {
-          var feedItems = responseData.filter(ev => ev.type == "PushEvent");
-          this.setState(
-            {
-              dataSource: this.state.dataSource.cloneWithRows(feedItems),
-              showProgress: false
-            },
-            function() {}
-          );
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    });
+  renderRow(rowData) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          borderColor: "#D7D7D7",
+          borderBottomWidth: 1,
+          paddingBottom: 20,
+          padding: 10
+        }}
+      >
+        <Text style={styles.bold}>
+          <Text>{rowData.sha.substring(0, 6)}</Text>
+        </Text>
+        <Text> - {rowData.message} </Text>
+      </View>
+    );
   }
 
   render() {
@@ -50,8 +47,57 @@ export default class PushPayload extends Component {
           alignItems: "center"
         }}
       >
-        <Text>Hello There</Text>
+        <Image
+          source={{ uri: this.state.pushEvent.actor.avatar_url }}
+          style={{
+            height: 120,
+            width: 120,
+            borderRadius: 60
+          }}
+        />
+        <Text
+          style={{
+            paddingTop: 20,
+            paddingBottom: 20,
+            fontSize: 20
+          }}
+        >
+          {moment(this.state.pushEvent.created_at).fromNow()}
+        </Text>
+        <Text>
+          <Text style={styles.bold}>{this.state.pushEvent.actor.login}</Text>{" "}
+          pushed to
+        </Text>
+        <Text style={styles.bold}>
+          {this.state.pushEvent.payload.ref.replace("refs/heads/", "")}
+        </Text>
+
+        <Text>
+          at <Text style={styles.bold}>{this.state.pushEvent.repo.name}</Text>
+        </Text>
+        <Text
+          style={{
+            paddingTop: 40,
+            fontSize: 20
+          }}
+        >
+          {this.state.pushEvent.payload.commits.length} Commits
+        </Text>
+        <ListView
+          contentInset={{
+            top: -50
+          }}
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow.bind(this)}
+        />
       </View>
     );
   }
 }
+
+var styles = StyleSheet.create({
+  bold: {
+    fontWeight: "800",
+    fontSize: 16
+  }
+});

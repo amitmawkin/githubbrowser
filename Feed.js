@@ -56,12 +56,11 @@ export default class Feed extends Component {
   }
 
   pressRow(rowData) {
-    console.log("RowData" + JSON.stringify(rowData));
     this.props.navigator.push({
-      title: "PushEvent",
+      title: "Push Event",
       component: PushPayload,
       passProps: {
-        PushEvent: rowData
+        pushEvent: rowData
       }
     });
   }
