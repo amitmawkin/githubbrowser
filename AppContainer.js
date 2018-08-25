@@ -1,6 +1,7 @@
 "use strict";
 import React, { Component } from "react";
 import { Text, View, StyleSheet, TabBarIOS } from "react-native";
+import Feed from "./Feed";
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class AppContainer extends React.Component {
           onPress={() => this.setState({ selectedTab: "Feed" })}
         >
           <View style={styles.container}>
-            <Text style={styles.welcome}>Tab1</Text>
+            <Feed />
           </View>
         </TabBarIOS.Item>
         <TabBarIOS.Item
