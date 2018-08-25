@@ -1,6 +1,6 @@
 "use strict";
 import React, { Component } from "react";
-import { Text, View, StyleSheet, TabBarIOS } from "react-native";
+import { Text, View, StyleSheet, TabBarIOS, NavigatorIOS } from "react-native";
 import Feed from "./Feed";
 
 class AppContainer extends React.Component {
@@ -20,9 +20,19 @@ class AppContainer extends React.Component {
           systemIcon="contacts"
           onPress={() => this.setState({ selectedTab: "Feed" })}
         >
-          <View style={styles.container}>
-            <Feed />
-          </View>
+          <NavigatorIOS
+            style={{
+              flex: 1
+            }}
+            initialRoute={{
+              component: Feed,
+              title: "Feed"
+            }}
+            style={{
+              flex: 1,
+              paddingTop: 100
+            }}
+          />
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Search"
