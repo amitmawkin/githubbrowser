@@ -10,6 +10,7 @@
     "auto-bind": "^1.2.1",
     "buffer": "^5.2.0",
     "lodash": "^4.17.10",
+    "moments": "0.0.2",
     "react": "16.4.1",
     "react-native": "0.56.0",
     "react-native-shimmer": "^0.3.2",

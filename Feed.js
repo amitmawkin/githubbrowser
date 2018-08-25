@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Text, View, ListView, ActivityIndicator, Image } from "react-native";
 import AuthService from "./AuthService";
+import moment from "moment";
 
 export default class Feed extends Component {
   constructor(props) {
@@ -34,10 +35,10 @@ export default class Feed extends Component {
         .then(responseData => {
           console.log("ResponseData is :" + JSON.stringify(responseData));
           var feedItems = responseData.filter(ev => ev.type == "PushEvent");
-          console.log("FeedItems:" + JSON.stringify(feedItems[0]));
+          console.log("FeedItems:" + JSON.stringify(feedItems));
           this.setState(
             {
-              dataSource: this.state.dataSource.cloneWithRows(feedItems[0]),
+              dataSource: this.state.dataSource.cloneWithRows(feedItems),
               showProgress: false
             },
             function() {}
@@ -62,13 +63,46 @@ export default class Feed extends Component {
         }}
       >
         <Image
-          source={{ uri: rowData.avatar_url }}
+          source={{ uri: rowData.actor.avatar_url }}
           style={{
             height: 36,
             width: 36,
             borderRadius: 18
           }}
         />
+
+        <View
+          style={{
+            paddingLeft: 20
+          }}
+        >
+          <Text style={{ backgroundColor: "#fff" }}>
+            {moment(rowData.created_at).fromNow()}
+          </Text>
+          <Text
+            style={{
+              backgroundColor: "#fff",
+              fontWeight: "600"
+            }}
+          >
+            {rowData.actor.login} pushed to{" "}
+          </Text>
+
+          <Text style={{ backgroundColor: "#fff" }}>
+            {rowData.payload.ref.replace("refs/heads/", "")}
+          </Text>
+          <Text style={{ backgroundColor: "#fff" }}>
+            at{" "}
+            <Text
+              style={{
+                fontWeight: "700"
+              }}
+            >
+              {rowData.repo.name}
+            </Text>
+            />
+          </Text>
+        </View>
       </View>
     );
   }
