@@ -13,6 +13,8 @@
     "moments": "0.0.2",
     "react": "16.4.1",
     "react-native": "0.56.0",
+    "react-native-elements": "^0.19.1",
+    "react-native-fontawesome": "^5.7.0",
     "react-native-shimmer": "^0.3.2",
     "react-native-vector-icons": "^5.0.0"
   },

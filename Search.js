@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableHighlight
 } from "react-native";
+import SearchResults from './SearchResults'
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -38,7 +39,13 @@ export default class Search extends React.Component {
   }
 
   onSearchPressed() {
-    console.log("Attempting to Search for" + this.state.searchQuery);
+    this.props.navigator.push({
+      component: SearchResults,
+      title: 'Results',
+      passProps: {
+        searchQuery: this.state.searchQuery
+      }
+    });
   }
 }
 

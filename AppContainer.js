@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet, TabBarIOS, NavigatorIOS } from "react-native";
 import Feed from "./Feed";
+import Search from "./Search";
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -36,13 +37,23 @@ class AppContainer extends React.Component {
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Search"
-          selected={this.state.selectedTab === "search"}
+          selected={this.state.selectedTab === "Search"}
           systemIcon="search"
-          onPress={() => this.setState({ selectedTab: "search" })}
+          onPress={() => this.setState({ selectedTab: "Search" })}
         >
-          <View style={styles.container}>
-            <Text style={styles.welcome}>Tab2</Text>
-          </View>
+          <NavigatorIOS
+            style={{
+              flex: 1
+            }}
+            initialRoute={{
+              component: Search,
+              title: "Search"
+            }}
+            style={{
+              flex: 1,
+              paddingTop: 100
+            }}
+          />
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="History"
